@@ -9,7 +9,7 @@ havecmd() {
 	if command -v "${BINARY}" >/dev/null 2>&1; then
 		return 0
 	else
-		ERRMSG="'${script_name}' requires '${BINARY}', could not find that on your \$PATH"
+		ERRMSG="'montage-timeline requires '${BINARY}', could not find that on your \$PATH"
 		[[ -n "$2" ]] && ERRMSG="${ERRMSG}. $2"
 		printf '%s\n' "${ERRMSG}" 1>&2
 		return 1
@@ -19,6 +19,7 @@ havecmd() {
 set -e
 havecmd sha1sum
 havecmd jq
+havecmd convert 'Installed with imagemagick'
 havecmd montage 'Installed with imagemagick'
 set +e
 
@@ -26,7 +27,7 @@ MONTAGE_IMAGE_CACHE="${HOME}/.cache/montage_timeline"
 mkdir -p "${MONTAGE_IMAGE_CACHE}"
 
 download_to_cache() {
-	local url_hash target_file
+	local target_file
 	local url="${1:?Must provide url to download}"
 	hash="$(sha1sum <<<"${url}" | cut -d" " -f1)"
 	target_file="${MONTAGE_IMAGE_CACHE}/${hash}.${url##*.}"
@@ -39,7 +40,6 @@ download_to_cache() {
 
 cache_image() {
 	local target="${1:?Must provide target image}"
-	local cached_image
 	if [[ "$target" =~ ^https?:// ]]; then
 		download_to_cache "$target"
 	else
@@ -63,6 +63,7 @@ combine_images() {
 			echo -e "Local img doesn't exist: ${local_img}" 1>&2
 			return 1
 		fi
+		# shellcheck disable=SC2184
 		unset parts_array[0]
 		for part in "${parts_array[@]}"; do
 			subtitles+=("label:${part}")
