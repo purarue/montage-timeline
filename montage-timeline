@@ -48,6 +48,7 @@ cache_image() {
 }
 
 combine_images() {
+	local output_file="${1:?Must provide output file}"
 	local -a parts_array temp_images
 	local parts_tmpdir img_number
 	temp_images=()
@@ -69,15 +70,28 @@ combine_images() {
 			subtitles+=("label:${part}")
 		done
 		image_with_label="${parts_tmpdir}/${img_number}.png"
-		printf '.' 1>&2
-		convert "${local_img}" -resize x500 -bordercolor black -border '0x3%' -pointsize "${MONTAGE_FONT_SIZE:-35}" -font "${MONTAGE_TIMELINE_FONT:-Helvetica}" -background "${MONTAGE_BACKGROUND:-black}" -fill "${MONTAGE_TEXTCOLOR:-white}" "${subtitles[@]}" -gravity "${MONTAGE_GRAVITY:-Center}" -append -bordercolor black -border '0%x3%' -gravity Center "${image_with_label}"
+		printf 'Preprocessing %s\n' "${line}" 1>&2
+		local -a preprocess_args
+		MONTAGE_EACH_IMG_WIDTH="${MONTAGE_EACH_IMG_WIDTH:-500}"
+		MONTAGE_EACH_IMG_PADDING="${MONTAGE_EACH_IMG_PADDING:-25}"
+		preprocess_args=("${local_img}" -resize x"${MONTAGE_EACH_IMG_WIDTH}")
+		if [[ -n "${subtitles[*]}" ]]; then
+			# arguments for adding subtitles/padding to images
+			preprocess_args+=(-bordercolor black -border "0x${MONTAGE_EACH_IMG_PADDING}" -pointsize "${MONTAGE_FONT_SIZE:-35}" -font "${MONTAGE_TIMELINE_FONT:-Helvetica}" -background "${MONTAGE_BACKGROUND:-black}" -fill "${MONTAGE_TEXTCOLOR:-white}" "${subtitles[@]}" -gravity "${MONTAGE_GRAVITY:-Center}" -append -bordercolor black -border "0x${MONTAGE_EACH_IMG_PADDING}" -gravity Center)
+		fi
+		convert "${preprocess_args[@]}" "${image_with_label}"
 		temp_images+=("${image_with_label}")
 		((img_number++))
 	done
-	echo
-	montage_full="${parts_tmpdir}/montage.png"
-	montage "${temp_images[@]}" -background black -geometry '500x550>+0+50' "${montage_full}"
-	convert "${montage_full}" -resize x2000 "$1"
+	MONTAGE_COMPUTED_HEIGHT=$((MONTAGE_EACH_IMG_WIDTH + 2 * MONTAGE_EACH_IMG_PADDING))
+	if [[ -z "${subtitles[*]}" ]]; then
+		MONTAGE_COMPUTED_HEIGHT=$((MONTAGE_EACH_IMG_WIDTH))
+	fi
+	montage_full="${parts_tmpdir}/full_montage.png"
+	echo "Creating montage..." 1>&2
+	montage "${temp_images[@]}" -background black -geometry "${MONTAGE_EACH_IMG_WIDTH}x${MONTAGE_COMPUTED_HEIGHT}>+0+0" "${montage_full}"
+	convert "${montage_full}" -resize x"${MONTAGE_LIMIT_WIDTH:-2000}" -resize "${MONTAGE_LIMIT_HEIGHT:-2000}"x "${output_file}"
+	printf 'Wrote to %s\n' "${output_file}" 1>&2
 	rm -rf "${parts_tmpdir}"
 }
 
