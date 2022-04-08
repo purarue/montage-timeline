@@ -1,4 +1,5 @@
 input
-*.jpeg
-*.jpg
-*.png
+*.json
+/*.jpeg
+/*.jpg
+/*.png
