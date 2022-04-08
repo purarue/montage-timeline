@@ -30,6 +30,8 @@ curl -sL 'https://sean.fish/feed_api/data/?offset=0&limit=100&order_by=score&sor
 
 Creates the following image:
 
+<img src="https://github.com/seanbreckenridge/montage-timeline/blob/master/.github/output.png?raw=true" width="500" />
+
 ## Install
 
 Install `montage`, then copy the `montage-timeline` script onto your `$PATH`
