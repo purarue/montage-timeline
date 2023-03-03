@@ -16,15 +16,10 @@ https://img.sean.fish/i/demon_days_gorillaz_2005.jpeg|Item 1|subtitle text
 There are lots of environment variables one can set to override the default behaviour:
 
 ```
-MONTAGE_BACKGROUND:-black
-MONTAGE_EACH_IMG_PADDING:-25
-MONTAGE_EACH_IMG_WIDTH:-500
-MONTAGE_FONT_SIZE:-35
-MONTAGE_GRAVITY:-Center
-MONTAGE_LIMIT_HEIGHT:-2000
-MONTAGE_LIMIT_WIDTH:-2000
-MONTAGE_TEXTCOLOR:-white
-MONTAGE_TIMELINE_FONT:-Helvetica
+>>>PMARK
+perl -E 'print "`"x3, "\n"'
+tr '[[:space:]]' '\n' <montage-timeline | chomp | grep -Poh '\$\{MONTAGE_.*:-.*\}' | tr -d '{}$' | sort
+perl -E 'print "`"x3, "\n"'
 ```
 
 As an example:
