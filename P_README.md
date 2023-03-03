@@ -18,7 +18,7 @@ There are lots of environment variables one can set to override the default beha
 ```
 >>>PMARK
 perl -E 'print "`"x3, "\n"'
-tr '[[:space:]]' '\n' <montage-timeline | chomp | grep -Poh '\$\{MONTAGE_.*:-.*\}' | tr -d '{}$' | sort
+tr '[:space:]' '\n' <montage-timeline | chomp | grep -Poh '\$\{MONTAGE_.*:-.*\}' | tr -d '{}$' | sort
 perl -E 'print "`"x3, "\n"'
 ```
 
