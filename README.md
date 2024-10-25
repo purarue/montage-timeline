@@ -33,7 +33,7 @@ As an example:
 MONTAGE_EACH_IMG_PADDING=0 montage-timeline <input.txt
 ```
 
-As an example, using [`my_feed`](https://github.com/seanbreckenridge/my_feed) API, converting the data to the input using `jq`:
+As an example, using [`my_feed`](https://github.com/purarue/my_feed) API, converting the data to the input using `jq`:
 
 ```
 curl -sL 'https://sean.fish/feed_api/data/?offset=0&limit=100&order_by=score&sort=desc&ftype=trakt_movie' \
@@ -44,7 +44,7 @@ curl -sL 'https://sean.fish/feed_api/data/?offset=0&limit=100&order_by=score&sor
 
 Creates the following image:
 
-<img src="https://github.com/seanbreckenridge/montage-timeline/blob/master/.github/output.png?raw=true" width="500" />
+<img src="https://github.com/purarue/montage-timeline/blob/master/.github/output.png?raw=true" width="500" />
 
 ## Install
 
@@ -53,5 +53,5 @@ Install `montage`, then copy the `montage-timeline` script onto your `$PATH`
 Or use [`basher`](https://github.com/basherpm/basher):
 
 ```bash
-basher install seanbreckenridge/montage-timeline
+basher install purarue/montage-timeline
 ```
