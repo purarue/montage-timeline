@@ -96,7 +96,7 @@ combine_images() {
 }
 
 example_input() {
-	echo -e 'https://img.sean.fish/i/demon_days_gorillaz_2005.jpeg|Item 1|subtitle text'
+	echo -e 'https://img.purarue.xyz/i/demon_days_gorillaz_2005.jpeg|Item 1|subtitle text'
 	echo -e '/path/to/image.png|Item 2|subtitle text'
 }
 

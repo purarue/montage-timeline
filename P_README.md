@@ -7,7 +7,7 @@ A wrapper for [`imagemagick`](https://imagemagick.org/index.php)'s `montage` com
 This accepts data to `STDIN` like:
 
 ```
-https://img.sean.fish/i/demon_days_gorillaz_2005.jpeg|Item 1|subtitle text
+https://img.purarue.xyz/i/demon_days_gorillaz_2005.jpeg|Item 1|subtitle text
 /path/to/image.png|Item 2|subtitle text
 ```
 
@@ -31,7 +31,7 @@ MONTAGE_EACH_IMG_PADDING=0 montage-timeline <input.txt
 As an example, using [`my_feed`](https://github.com/purarue/my_feed) API, converting the data to the input using `jq`:
 
 ```
-curl -sL 'https://sean.fish/feed_api/data/?offset=0&limit=100&order_by=score&sort=desc&ftype=trakt_movie' \
+curl -sL 'https://purarue.xyz/feed_api/data/?offset=0&limit=100&order_by=score&sort=desc&ftype=trakt_movie' \
   | jq -r '.[] | "\(.image_url)|\(.title)"' \
   | head -n 20 \
   | montage-timeline output.png
